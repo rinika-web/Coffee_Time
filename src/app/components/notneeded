@@ -1,0 +1,3461 @@
+import React from "react";
+import { navData } from "./Data";
+
+const Navbar = () => {
+  return (
+    <div className="flex items-center gap-8">
+      {navData.map((item) => {
+        const isSpecial = item.id === 5;
+
+        return (
+          <a
+            key={item.id}
+            href={item.link}
+            className={`
+              text-[18px] text-[#E8E3D8] tracking-wide transition
+              ${isSpecial
+                ? "text-[#E8E3D8] bg-[#7D553B] p-2 ml-10"
+                : "text-[#ffefdf] hover:text-white"}
+            `}
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            {item.title}
+          </a>
+        );
+      })}
+    </div>
+  );
+};
+
+export default Navbar;
+
+
+
+import React from "react";
+import { navData } from "./Data";
+
+const Navbar = () => {
+  return (
+    <div className="flex items-center gap-8">
+      {navData.map((item) => {
+        const isSpecial = item.id === 5;
+
+        return (
+          <a
+            key={item.id}
+            href={item.link}
+            className={`
+              text-[18px] text-[#E8E3D8] tracking-wide transition
+              ${isSpecial
+                ? "text-[#E8E3D8] bg-[#7D553B] p-2 ml-10"
+                : "text-[#ffefdf] hover:text-white"}
+            `}
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            {item.title}
+          </a>
+        );
+      })}
+    </div>
+  );
+};
+
+export default Navbar;
+
+
+
+
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useAnimationFrame } from "framer-motion";
+import { useRouter } from "next/navigation";
+import {navData} from "./Data";
+
+
+const NavbarElement = () => {
+  const router = useRouter();
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const borderRef = useRef(null);
+
+  const DURATION = 0.5;
+  const STAGGER = 0.02;
+
+  /* ---------------- Scroll hide / show ---------------- */
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setShowNavbar(false);
+      } else {
+        setShowNavbar(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  /* ---------------- Animated border ---------------- */
+  useAnimationFrame((t) => {
+    if (borderRef.current) {
+      const angle = (t / 10) % 360;
+      borderRef.current.style.setProperty("--border-angle", `${angle}deg`);
+    }
+  });
+
+  /* ---------------- Navigation handler ---------------- */
+  const handleScroll = async (href) => {
+    if (!href) return;
+
+    if (!href.startsWith("#")) {
+      router.push(href);
+      return;
+    }
+
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <motion.div
+      initial={{ y: 0 }}
+      animate={{ y: showNavbar ? 0 : -120 }}
+      transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+      className="fixed"
+    >
+      <motion.div
+       
+      >
+        <div className="flex items-center gap-8">
+
+          {/* Nav items */}
+          {navData.map((item) => {
+            const isPrimary = item.id === 5;
+
+            return (
+              <div key={item.id} className="tracking-wide transition">
+                <motion.a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleScroll(item.href);
+                  }}
+                  initial="initial"
+                  whileHover="hovered"
+                  className={`
+                    relative overflow-hidden cursor-pointer
+                    flex items-start justify-start
+                    font-semibold tracking-wide 
+                    ${isPrimary
+                      ? "text-[#E8E3D8] text-[18px] bg-[#7d553b] p-2"
+                      : "text-[#E8E3D8] text-[18px]"}
+                  `}
+                  style={{ fontFamily: "var(--font-cormorant)" }}
+                >
+                  {/* Default text */}
+                  <div>
+                    {item.title.split("").map((l, i) => (
+                      <motion.span
+                        key={i}
+                        variants={{
+                          initial: { y: 0, opacity: 1 },
+                          hovered: { y: "-100%", opacity: 0 },
+                        }}
+                        transition={{
+                          duration: DURATION,
+                          ease: [0.76, 0, 0.24, 1],
+                          delay: STAGGER * i,
+                        }}
+                        className="inline-block"
+                      >
+                        {l}
+                      </motion.span>
+                    ))}
+                  </div>
+
+                  {/* Hover text */}
+                  <div className="absolute inset-0">
+                    {item.title.split("").map((l, i) => (
+                      <motion.span
+                        key={i}
+                        variants={{
+                          initial: { y: "100%", opacity: 0 },
+                          hovered: { y: 0, opacity: 1 },
+                        }}
+                        transition={{
+                          duration: DURATION,
+                          ease: [0.76, 0, 0.24, 1],
+                          delay: STAGGER * i,
+                        }}
+                        className="inline-block"
+                      >
+                        {l}
+                      </motion.span>
+                    ))}
+                  </div>
+                </motion.a>
+
+                
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+export default NavbarElement;
+
+
+//fixg
+
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useAnimationFrame } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { navData } from "./Data";
+
+
+const NavbarElement = () => {
+    const router = useRouter();
+    const [showNavbar, setShowNavbar] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+    const borderRef = useRef(null);
+
+    const DURATION = 0.5;
+    const STAGGER = 0.02;
+
+    /* ---------------- Scroll hide / show ---------------- */
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                setShowNavbar(false);
+            } else {
+                setShowNavbar(true);
+            }
+
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY]);
+
+    /* ---------------- Animated border ---------------- */
+    useAnimationFrame((t) => {
+        if (borderRef.current) {
+            const angle = (t / 10) % 360;
+            borderRef.current.style.setProperty("--border-angle", `${angle}deg`);
+        }
+    });
+
+    /* ---------------- Navigation handler ---------------- */
+    const handleScroll = async (href) => {
+        if (!href) return;
+
+        if (!href.startsWith("#")) {
+            router.push(href);
+            return;
+        }
+
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+    };
+
+    return (
+        <motion.div
+            initial={{ y: 0 }}
+            animate={{ y: showNavbar ? 0 : -120 }}
+            transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed flex items-center justify-center bg-transparent"
+        >
+            <motion.div
+
+            >
+                <div className="flex items-center justify-center gap-8">
+
+                    {/* Nav items */}
+                    {navData.map((item) => {
+                        const isPrimary = item.id === 5;
+
+                        return (
+                            <div key={item.id} className="tracking-wide transition">
+                                <motion.a
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleScroll(item.href);    
+                                    }}
+                                    initial="initial"
+                                    whileHover="hovered"
+                                    className={`
+                    relative overflow-hidden cursor-pointer
+                    flex items-center justify-center
+                    font-semibold tracking-wide 
+                    ${isPrimary
+                                            ? "text-[#E8E3D8] text-[22px] bg-[#7d553b] p-2 ml-10"
+                                            : "text-[#E8E3D8] text-[22px]"}
+                  `}
+                                    style={{ fontFamily: "var(--font-cormorant)" }}
+                                >
+                                    {/* Default text */}
+                                    <div className="flex items-center justify-center w-full h-full">
+                                        {item.title.split("").map((l, i) => (
+                                            <motion.span
+                                                key={i}
+                                                variants={{
+                                                    initial: { y: 0, opacity: 1 },
+                                                    hovered: { y: "-100%", opacity: 0 },
+                                                }}
+                                                transition={{
+                                                    duration: DURATION,
+                                                    ease: [0.76, 0, 0.24, 1],
+                                                    delay: STAGGER * i,
+                                                }}
+                                                className="inline-block"
+                                            >
+                                                {l}
+                                            </motion.span>
+                                        ))}
+                                    </div>
+
+
+                                    {/* Hover text */}
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        {item.title.split("").map((l, i) => (
+                                            <motion.span
+                                                key={i}
+                                                variants={{
+                                                    initial: { y: "100%", opacity: 0 },
+                                                    hovered: { y: 0, opacity: 1 },
+                                                }}
+                                                transition={{
+                                                    duration: DURATION,
+                                                    ease: [0.76, 0, 0.24, 1],
+                                                    delay: STAGGER * i,
+                                                }}
+                                                className="inline-block"
+                                            >
+                                                {l}
+                                            </motion.span>
+                                        ))}
+                                    </div>
+
+                                </motion.a>
+
+
+                            </div>
+                        );
+                    })}
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+};
+
+export default NavbarElement;
+
+
+import React from "react";
+import NavElement from "./NavElement";
+
+const Navbar = () => {
+  return (
+    <header className="w-full fixed top-0 z-50 bg-transparent">
+      <div className="max-w-[1440px] mx-auto px-6">
+        <nav className="grid grid-cols-8 items-center h-20">
+
+          {/* Logo */}
+          <div className="col-span-6 lg:col-span-3 flex items-center">
+            <span
+              className="text-[16px] tracking-[0.25em] uppercase text-[#E8E3D8]"
+              style={{ fontFamily: "var(--font-playfair)" }}
+            >
+              Coffee <br /> Time
+            </span>
+          </div>
+
+          {/* Nav */}
+          <div className="col-span-6 lg:col-span-5 flex justify-end">
+            <NavElement />
+          </div>
+
+        </nav>
+      </div>
+    </header>
+  );
+};
+
+export default Navbar;
+ 
+
+
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useAnimationFrame } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { navData } from "./Data";
+
+
+const NavbarElement = () => {
+    const router = useRouter();
+    const [showNavbar, setShowNavbar] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+    const borderRef = useRef(null);
+
+    const DURATION = 0.5;
+    const STAGGER = 0.02;
+
+    /* ---------------- Scroll hide / show ---------------- */
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                setShowNavbar(false);
+            } else {
+                setShowNavbar(true);
+            }
+
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY]);
+
+    /* ---------------- Animated border ---------------- */
+    useAnimationFrame((t) => {
+        if (borderRef.current) {
+            const angle = (t / 10) % 360;
+            borderRef.current.style.setProperty("--border-angle", `${angle}deg`);
+        }
+    });
+
+    /* ---------------- Navigation handler ---------------- */
+    const handleScroll = async (href) => {
+        if (!href) return;
+
+        if (!href.startsWith("#")) {
+            router.push(href);
+            return;
+        }
+
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+    };
+
+    return (
+        <motion.div
+            initial={{ y: 0 }}
+            animate={{ y: showNavbar ? 0 : -120 }}
+            transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed flex items-center justify-center bg-transparent"
+        >
+            <motion.div
+
+            >
+                <div className="flex items-center justify-center gap-8">
+
+                    {/* Nav items */}
+                    {navData.map((item) => {
+                        const isPrimary = item.id === 5;
+
+                        return (
+                            <div key={item.id} className="tracking-wide transition">
+                                <motion.a
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleScroll(item.href);
+                                    }}
+                                    initial="initial"
+                                    whileHover="hovered"
+                                    className={`
+  relative overflow-hidden cursor-pointer
+  flex items-center justify-center
+  tracking-[0.08em]
+  ${isPrimary
+                                            ? "text-[#E8E3D8] text-[20px] font-semibold bg-[#7d553b] px-4 py-2 rounded-md ml-10"
+                                            : "text-[#E8E3D8] text-[20px] font-medium"}
+`}
+
+                                    style={{ fontFamily: "var(--font-cormorant)" }}
+                                >
+                                    {/* Default text */}
+                                    <div className="flex items-center justify-center w-full h-full">
+                                        {item.title.split("").map((l, i) => (
+                                            <motion.span
+                                                key={i}
+                                                variants={{
+                                                    initial: { y: 0, opacity: 1 },
+                                                    hovered: { y: "-100%", opacity: 0 },
+                                                }}
+                                                transition={{
+                                                    duration: DURATION,
+                                                    ease: [0.76, 0, 0.24, 1],
+                                                    delay: STAGGER * i,
+                                                }}
+                                                className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                                            >
+                                                {l === " " ? "\u00A0" : l}
+                                            </motion.span>
+                                        ))}
+
+                                    </div>
+
+
+                                    {/* Hover text */}
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        {item.title.split("").map((l, i) => (
+                                            <motion.span
+                                                key={i}
+                                                variants={{
+                                                    initial: { y: "100%", opacity: 0 },
+                                                    hovered: { y: 0, opacity: 1 },
+                                                }}
+                                                transition={{
+                                                    duration: DURATION,
+                                                    ease: [0.76, 0, 0.24, 1],
+                                                    delay: STAGGER * i,
+                                                }}
+                                                className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                                            >
+                                                {l === " " ? "\u00A0" : l}
+                                            </motion.span>
+                                        ))}
+
+                                    </div>
+
+                                </motion.a>
+
+
+                            </div>
+                        );
+                    })}
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+};
+
+export default NavbarElement;
+
+
+
+"use client";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { navData } from "./Data";
+
+const NavbarElement = () => {
+  const router = useRouter();
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const DURATION = 0.45;
+  const STAGGER = 0.025;
+
+  /* ---------------- Scroll hide / show ---------------- */
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setShowNavbar(!(currentScrollY > lastScrollY && currentScrollY > 100));
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  /* ---------------- Navigation handler ---------------- */
+  const handleScroll = (href) => {
+    if (!href) return;
+    if (!href.startsWith("#")) return router.push(href);
+
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <motion.div
+      animate={{ y: showNavbar ? 0 : -120 }}
+      transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+      className="flex items-center justify-between gap-[44.7vw]  "
+    >
+
+       {/* Logo — Left */}
+        <div className="flex items-center  justify-start">
+          <span
+
+            className="text-[20px] tracking-[0.25em] uppercase text-[#E8E3D8] font-semibold"
+            style={{ fontFamily: "var(--font-geistSans)" }}
+          >
+            Coffee <br /> Time
+          </span>
+        </div>
+      <div className="flex items-center gap-10">
+
+        {navData.map((item) => {
+          const isPrimary = item.id === 5;
+
+          return (
+            <motion.a
+              key={item.id}
+              onClick={(e) => {
+                e.preventDefault();
+                handleScroll(item.href);
+              }}
+              initial="initial"
+              whileHover="hovered"
+              className={`
+                relative flex items-center justify-center
+                h-[44px]
+                overflow-hidden cursor-pointer text-[16px]
+                tracking-[0.05em]
+                font-medium
+                ${isPrimary
+                  ? "border-2 border-[#E8E3D8] px-6 rounded-md text-[#E8E3D8] font-semibold ml-10"
+                  : "text-[#E8E3D8]"}
+              `}
+              style={{ fontFamily: "var(--font-geistSans)" }}
+            >
+              {/* Default text */}
+              <div className=" inset-0 flex items-center justify-center">
+                {item.title.split("").map((l, i) => (
+                  <motion.span
+                    key={i}
+                    variants={{
+                      initial: { y: 0, opacity: 1 },
+                      hovered: { y: "-100%", opacity: 0 },
+                    }}
+                    transition={{
+                      duration: DURATION,
+                      ease: [0.76, 0, 0.24, 1],
+                      delay: STAGGER * i,
+                    }}
+                    className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                  >
+                    {l === " " ? "\u00A0" : l}
+                  </motion.span>
+                ))}
+              </div>
+
+              {/* Hover text */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                {item.title.split("").map((l, i) => (
+                  <motion.span
+                    key={i}
+                    variants={{
+                      initial: { y: "100%", opacity: 0 },
+                      hovered: { y: 0, opacity: 1 },
+                    }}
+                    transition={{
+                      duration: DURATION,
+                      ease: [0.76, 0, 0.24, 1],
+                      delay: STAGGER * i,
+                    }}
+                    className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                  >
+                    {l === " " ? "\u00A0" : l}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.a>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+};
+
+export default NavbarElement;
+
+
+import React from "react";
+import NavElement from "./NavElement";
+
+const Navbar = () => {
+  return (
+    <header className="fixed + top-4 z-50 w-full bg-transparent">
+      <div className="max-w-[1440px] mx-auto px-10 flex items-center">
+ <NavElement />
+        {/* Logo — Left 
+        <div className="flex items-center">
+          <span
+            className="text-[20px] tracking-[0.25em] uppercase text-[#E8E3D8] font-semibold"
+            style={{ fontFamily: "var(--font-geistSans)" }}
+          >
+            Coffee <br /> Time
+          </span>
+        </div>*/}
+
+        {/* Nav — TRUE CENTER 
+        <div className="absolute right-10 ">
+          <NavElement />
+        </div>
+*/}
+      </div>
+    </header>
+  );
+};
+
+export default Navbar;
+
+
+
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --background: #0e0e0e;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #f5e8e8;
+    --foreground: #021c09;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.bellefair-regular {
+  font-family: "Bellefair", serif;
+  font-weight: 400;
+}
+
+.dancing {
+  font-family: "Dancing Script", cursive;
+}
+
+:root {
+  --light: #FFFBEB;
+  --dark: #030000;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    #030000 50%,
+    #e6c97a0c 100%
+  );
+  animation: vignetteBreath 24s ease-in-out infinite;
+}
+
+
+
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --background: #0e0e0e;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #f5e8e8;
+    --foreground: #021c09;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.bellefair-regular {
+  font-family: "Bellefair", serif;
+  font-weight: 400;
+}
+
+.dancing {
+  font-family: "Dancing Script", cursive;
+}
+
+:root {
+  --light: #FFFBEB;
+  --dark: #030000;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    #030000 50%,
+    #e6c97a0c 100%
+  );
+  animation: vignetteBreath 24s ease-in-out infinite;
+}
+
+
+
+@import "tailwindcss";
+
+/* ---------------------------------------------------
+   Core document setup
+--------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #1c1c1c; /* base charcoal */
+}
+
+/* ---------------------------------------------------
+   Background layers (THE CORRECT WAY)
+   These never touch layout or scroll
+--------------------------------------------------- */
+
+/* Grain texture */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/features/Coffee/grain.jpg");
+ /* background-repeat: repeat;*/
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: -2;
+  }
+
+ /* body::before { 
+    content: ""; 
+    position: fixed; 
+    inset: 0; 
+    background-image: url("/features/Coffee/grain.jpg"); 
+    pointer-events: none; 
+    z-index: 0; }
+*/
+
+/* Vignette */
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  animation: vignetteBreath 24s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ---------------------------------------------------
+   Theme variables
+--------------------------------------------------- */
+
+:root {
+  --background: #1c1c1c;
+  --foreground: #FFFBEB;
+
+  --light: #FFFBEB;
+  --dark: #030000;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Lock theme (avoid OS overrides) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1c1c1c;
+    --foreground: #FFFBEB;
+  }
+}
+
+/* ---------------------------------------------------
+   Body (CONTENT ONLY — NO LAYERS)
+--------------------------------------------------- */
+
+body {
+  min-height: 100vh;
+  background-color: transparent; /* important */
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ---------------------------------------------------
+   Typography helpers
+--------------------------------------------------- */
+
+.bellefair-regular {
+  font-family: "Bellefair", serif;
+  font-weight: 400;
+}
+
+.dancing {
+  font-family: "Dancing Script", cursive;
+}
+
+/* ---------------------------------------------------
+   Vignette animation
+--------------------------------------------------- */
+
+@keyframes vignetteBreath {
+  0% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0.45;
+  }
+}
+
+
+
+import React from "react";
+import Image from "next/image";
+
+const menuItems = [
+  { title: "Cappuccino", img: "/features/Coffee/coffee_brown.jpg" },
+  { title: "Cold Coffee", img: "/features/Coffee/coffee_brown.jpg" },
+  { title: "Espresso", img: "/features/Coffee/coffee_brown.jpg" },
+  { title: "Mocha", img: "/features/Coffee/coffee_brown.jpg" },
+  { title: "Caffè Latte", img: "/features/Coffee/coffee_brown.jpg" },
+  { title: "Americano", img: "/features/Coffee/coffee_brown.jpg" },
+];
+
+const Menu = () => {
+  return (
+    <section className="relative w-screen min-h-screen flex items-center justify-center z-50">
+      <div className="grid grid-rows-[auto_1fr] gap-20 w-full max-w-6xl px-10">
+
+        {/* Title */}
+        <div className="flex flex-col items-center justify-center">
+          <h1
+            className="
+              text-[52px] md:text-[64px]
+              leading-[1.05]
+              tracking-[0.08em]
+              font-light
+              text-[#E8E3D8]
+            "
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            MENU
+          </h1>
+          <p className="text-[#E8E3D8] text-[14px] tracking-[0.12em] mt-4 flex flex-col items-center text-center"
+          style={{ fontFamily: "var(--font-geistSans)" }}
+          >
+            <span>Rooted in tradition and refined through process, our menu reflects </span>
+            <span> a commitment to simplicity, balance, and the experience of good coffee </span>
+            <span></span>
+          </p>
+        </div>
+
+        {/* Menu items */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-16 place-items-center">
+
+          {menuItems.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center gap-6 text-center"
+            >
+              <div className="w-[160px] h-[160px] relative  backdrop-blur-3xl  rounded-lg bg-black/20 border border-white/10">
+                <Image
+                  src={item.img}
+                  alt={item.title}
+                  fill
+                  className="object-contain backdrop-blur-3xl p-4 px-2 rounded-lg"
+                />
+              </div>
+
+              <h2
+                className="
+                  text-[16px]
+                  tracking-[0.12em]
+                  uppercase
+                  text-[#E8E3D8]
+                "
+                 style={{ fontFamily: "var(--font-playfair)" }}
+              >
+                {item.title}
+              </h2>
+            </div>
+          ))}
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Menu;
+
+
+
+
+export const menuItems = [
+  { 
+    title: "Cappuccino", 
+    img: "/features/Coffee/coffee_brown.jpg" 
+},
+  { 
+    title: "Cold Coffee", 
+    img: "/features/Coffee/coffee_brown.jpg" 
+},
+  { 
+    title: "Espresso", 
+    img: "/features/Coffee/coffee_brown.jpg" 
+},
+  { 
+    title: "Mocha", 
+    img: "/features/Coffee/coffee_brown.jpg" 
+},
+  { 
+    title: "Caffè Latte", 
+    img: "/features/Coffee/coffee_brown.jpg" 
+},
+  { 
+    title: "Americano", 
+    img: "/features/Coffee/coffee_brown.jpg" 
+},
+];
+
+
+
+@import "tailwindcss";
+
+/* ---------------------------------------------------
+   Core document setup
+--------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #1c1c1c;
+}
+
+/* ---------------------------------------------------
+   Background layers (DO NOT AFFECT SCROLL)
+--------------------------------------------------- */
+
+/* Grain texture (TILED, NOT STRETCHED) */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background-image: url("/features/Coffee/grain3.jpg");
+  /* background-repeat: repeat;*/
+  background-size: 200px; /* smaller = denser grain */
+
+  opacity: 0.07; /* correct grain strength 
+  mix-blend-mode: overlay;*/
+background-size: cover;
+overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Vignette */
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 85%,
+    rgb(0, 0, 0) 100%
+  );
+
+  animation: vignetteBreath 24s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ---------------------------------------------------
+   Theme variables
+--------------------------------------------------- */
+
+:root {
+  --background: #1c1c1c;
+  --foreground: #FFFBEB;
+
+  --light: #FFFBEB;
+  --dark: #030000;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ---------------------------------------------------
+   Body (CONTENT ONLY)
+--------------------------------------------------- */
+
+body {
+  min-height: 100vh;
+  background-color: transparent;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ---------------------------------------------------
+   Typography helpers
+--------------------------------------------------- */
+
+.bellefair-regular {
+  font-family: "Bellefair", serif;
+}
+
+.dancing {
+  font-family: "Dancing Script", cursive;
+}
+
+/* ---------------------------------------------------
+   Vignette animation
+--------------------------------------------------- */
+
+@keyframes vignetteBreath {
+  0% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0.45;
+  }
+}
+
+
+
+import React from "react";
+import Image from "next/image";
+import {menuItems} from "./MenuData";
+import ScrollCard from "./ScrollCard";
+
+const Menu = () => {
+  
+  return (
+    <section className=" relative w-screen min-h-screen flex items-center justify-center z-50">
+  <div className="grid grid-rows-[auto_1fr] gap-20 w-full max-w-6xl px-10">
+
+    {/* Title */}
+    <div className="flex flex-col items-center justify-center">
+      <h1
+        className="text-[52px] md:text-[64px] leading-[1.05] tracking-[0.08em] font-light text-[#E8E3D8]"
+        style={{ fontFamily: "var(--font-playfair)" }}
+      >
+        MENU
+      </h1>
+
+      <p
+        className="mt-6 max-w-xl text-center text-[14px] leading-relaxed tracking-[0.12em] text-[#E8E3D8]/70"
+        style={{ fontFamily: "var(--font-geistSans)" }}
+      >
+        Rooted in tradition and refined through process, our menu reflects a commitment to simplicity, balance, and the experience of good coffee.
+      </p>
+    </div>
+
+    {/* Menu items */}
+
+<div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16 place-items-center">
+  {menuItems.map((item, index) => (
+    <div key={index} className=" flex flex-col items-center gap-6 text-center">
+
+      {/* Card */}
+       <ScrollCard index={index}>
+      <div className=" flip-card w-[170px] h-[220px]">
+
+        <div className="flip-inner">
+
+          {/* Front – Image */}
+          <div className="flip-face bg-black/20 border border-white/10 backdrop-blur-xl flex items-center justify-center">
+            <Image
+              src={item.img}
+              alt={item.title}
+              fill
+              className="object-contain p-6"
+            />
+          </div>
+
+          {/* Back – Details */}
+          <div className="flip-face flip-back bg-[#141414]/90 border border-white/10 backdrop-blur-xl flex flex-col items-center justify-center px-5">
+
+            <p
+              className="text-[20px] tracking-wide text-[#E8E3D8]"
+              style={{ fontFamily: "var(--font-playfair)" }}
+            >
+              {item.price}
+            </p>
+
+            <div className="w-8 h-px bg-white/30 my-4" />
+
+            <p
+              className="text-[12px] leading-relaxed tracking-wide text-[#E8E3D8]/70"
+              style={{ fontFamily: "var(--font-geistSans)" }}
+            >
+              {item.desc}
+            </p>
+          </div>
+
+        </div>
+      </div>
+      </ScrollCard>
+
+      {/* Title */}
+      <h2
+        className="text-[16px] tracking-[0.14em] uppercase text-[#E8E3D8]"
+        style={{ fontFamily: "var(--font-playfair)" }}
+      >
+        {item.title}
+      </h2>
+
+    </div>
+  ))}
+</div>
+
+  </div>
+</section>
+
+  );
+};
+
+export default Menu;
+
+
+
+"use client"
+import React, {useRef, useEffect} from "react";
+import Image from "next/image";
+import {menuItems} from "./MenuData";
+import ScrollCard from "./ScrollCard";
+import  gsap  from "gsap";
+
+const Menu = () => {
+
+
+
+  
+  return (
+  <section className="relative w-full min-h-screen flex items-center justify-center z-50">
+
+  <div className="grid grid-rows-[auto_1fr] gap-20 w-full max-w-6xl px-10">
+
+    {/* Title */}
+    <div className="flex flex-col items-center justify-center">
+      <h1
+        className="text-[52px] md:text-[64px] leading-[1.05] tracking-[0.08em] font-light text-[#E8E3D8]"
+        style={{ fontFamily: "var(--font-playfair)" }}
+      >
+        MENU
+      </h1>
+
+      <p
+        className="mt-6 max-w-xl text-center text-[14px] leading-relaxed tracking-[0.12em] text-[#E8E3D8]/70"
+        style={{ fontFamily: "var(--font-geistSans)" }}
+      >
+        Rooted in tradition and refined through process, our menu reflects a commitment to simplicity, balance, and the experience of good coffee.
+      </p>
+    </div>
+
+    {/* Menu items */}
+
+<div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16 place-items-center">
+  {menuItems.map((item, index) => (
+    <div key={index} className=" flex flex-col items-center gap-6 text-center">
+
+      {/* Card */}
+       <ScrollCard index={index}>
+      <div className=" flip-card w-[170px] h-[220px]">
+
+        <div className="flip-inner">
+
+          {/* Front – Image */}
+          <div className="flip-face bg-black/20 border border-white/10 backdrop-blur-xl flex items-center justify-center">
+            <Image
+              src={item.img}
+              alt={item.title}
+              fill
+              className="object-contain p-6"
+            />
+          </div>
+
+          {/* Back – Details */}
+          <div className="flip-face flip-back bg-[#141414]/90 border border-white/10 backdrop-blur-xl flex flex-col items-center justify-center px-5">
+
+            <p
+              className="text-[20px] tracking-wide text-[#E8E3D8]"
+              style={{ fontFamily: "var(--font-playfair)" }}
+            >
+              {item.price}
+            </p>
+
+            <div className="w-8 h-px bg-white/30 my-4" />
+
+            <p
+              className="text-[12px] leading-relaxed tracking-wide text-[#E8E3D8]/70"
+              style={{ fontFamily: "var(--font-geistSans)" }}
+            >
+              {item.desc}
+            </p>
+          </div>
+
+        </div>
+      </div>
+      </ScrollCard>
+
+      {/* Title */}
+      <h2
+        className="text-[16px] tracking-[0.14em] uppercase text-[#E8E3D8]"
+        style={{ fontFamily: "var(--font-playfair)" }}
+      >
+        {item.title}
+      </h2>
+
+    </div>
+  ))}
+</div>
+
+  </div>
+</section>
+
+  );
+};
+
+export default Menu;
+
+
+
+'use client'
+import React, { useRef } from 'react';
+import Magnetic from '.././magnetic/Magnetic';
+//import Footer from './Footer';
+//import ContactImage from './ContactImage';
+import { motion, useAnimationFrame } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import gsap from 'gsap';
+import Image from 'next/image';
+
+const Footer = () => {
+    const router = useRouter();
+    const borderRef = useRef(null);
+
+    useAnimationFrame((t) => {
+        if (borderRef.current) {
+            const angle = (t / 10) % 360;
+            borderRef.current.style.setProperty('--border-angle', `${angle}deg`);
+        }
+    });
+
+    const handleNavigation = () => {
+        const overlay = document.getElementById('transition-overlay')
+
+        if (!overlay) {
+            // Fallback: if overlay not mounted, just navigate
+            router.push('/contact')
+            return
+        }
+
+        // Animate overlay down before routing
+        gsap.to(overlay, {
+            y: 0,
+            duration: 0.6,
+            ease: 'power4.inOut',
+            onComplete: () => {
+                router.push('/contact')
+            }
+        })
+    }
+
+
+
+    return (
+  <section className="relative w-full h-1/2 mt-64 overflow-hidden">
+    
+    
+
+
+    {/* Background Image */}
+    <Image
+      src="/features/Coffee/Coffee_POWDER.jpg"
+      alt="Contact Illustration"
+      fill
+      priority
+      className="object-cover"
+    /> 
+
+    {/* Optional dark overlay for readability */}
+    <div className="absolute inset-0 bg-black/60 z-10" />
+
+    {/* Content */}
+    <div className="relative z-40 w-full h-full flex justify-end items-center px-20 ">
+
+      <motion.div
+        ref={borderRef}
+        className="w-full flex flex-row justify-center items-center gap-5 p-1 rounded-3xl"
+      >
+        <div
+          className="w-full h-full p-12 flex flex-row justify-center items-center gap-40
+          shadow-2xl"
+        >
+         <div className="flex flex-col items-center justify-center">
+<h1 className="text-[32px] md:text-[56px] tracking-[0.09em] text-[#E8E3D8]"
+           style={{ fontFamily: "var(--font-playfair)" }}>
+            Visit Our Café
+          </h1>
+          <p className="flex flex-col justify-center items-center">
+            <span>A space shaped by craft, calm, and conversation. Join us for thoughtfully </span>
+            <span>  brewed coffee warm interiors, and moments meant to be savored—one cup at a time.</span>
+</p>
+    </div>
+
+          <Magnetic>
+            <div className="relative">
+              <button
+                onClick={handleNavigation}
+                className="w-40 h-40 relative overflow-hidden flex justify-center items-center
+                border-2 border-white/10 backdrop-blur-3xl bg-[#7d553b] text-[#E8E3D8] rounded-full p-5 cursor-pointer"
+              >
+                <p style={{ fontFamily: 'var(--font-cormorant)' }}>
+                 Reserve the Experience
+                </p>
+              </button>
+            </div>
+          </Magnetic>
+        </div>
+      </motion.div>
+
+    </div>
+  </section>
+);
+
+};
+
+export default Footer;
+
+
+
+
+//navbar when not working hover
+
+"use client";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { navData } from "./Data";
+
+const NavbarElement = () => {
+  const router = useRouter();
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const DURATION = 0.45;
+  const STAGGER = 0.025;
+
+  /* ---------------- Scroll hide / show ---------------- */
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setShowNavbar(!(currentScrollY > lastScrollY && currentScrollY > 100));
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  /* ---------------- Navigation handler ---------------- */
+  const handleScroll = (href) => {
+    if (!href) return;
+    if (!href.startsWith("#")) return router.push(href);
+
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <motion.nav
+  animate={{ y: showNavbar ? 0 : -120 }}
+  transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+  className="
+    fixed top-0 left-0 z-50 w-full
+    bg-transparent
+  "
+>
+  <div
+    className="
+      mx-auto max-w-[1280px]
+      h-[72px]
+      px-6
+      flex items-center justify-between
+    "
+  >
+    {/* Logo — Left */}
+    <div className="flex items-center">
+      <span
+        className="
+          text-[18px]
+          tracking-[0.25em]
+          uppercase
+          text-[#E8E3D8]
+          font-semibold
+          leading-tight
+        "
+        style={{ fontFamily: "var(--font-geistSans)" }}
+      >
+        Coffee <br /> Time
+      </span>
+    </div>
+
+    {/* Navigation — Right */}
+    <div className="flex items-center gap-10">
+      {navData.map((item) => {
+        const isPrimary = item.id === 5;
+
+        return (
+          <motion.a
+            key={item.id}
+            onClick={(e) => {
+              e.preventDefault();
+              handleScroll(item.href);
+            }}
+            initial="initial"
+            whileHover="hovered"
+            className={`
+              relative
+              flex items-center justify-center
+              h-[44px]
+              overflow-hidden
+              cursor-pointer
+              text-[14px]
+              tracking-[0.08em]
+              uppercase
+              font-medium
+              ${
+                isPrimary
+                  ? "border border-[#E8E3D8] px-6 rounded-md text-[#E8E3D8] font-semibold ml-4"
+                  : "text-[#E8E3D8]"
+              }
+            `}
+            style={{ fontFamily: "var(--font-geistSans)" }}
+          >
+            {/* Default text */}
+            <div className="inset-0 flex items-center justify-center">
+              {item.title.split("").map((l, i) => (
+                <motion.span
+                  key={i}
+                  variants={{
+                    initial: { y: 0, opacity: 1 },
+                    hovered: { y: "-100%", opacity: 0 },
+                  }}
+                  transition={{
+                    duration: DURATION,
+                    ease: [0.76, 0, 0.24, 1],
+                    delay: STAGGER * i,
+                  }}
+                  className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                >
+                  {l === " " ? "\u00A0" : l}
+                </motion.span>
+              ))}
+            </div>
+
+            {/* Hover text */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {item.title.split("").map((l, i) => (
+                <motion.span
+                  key={i}
+                  variants={{
+                    initial: { y: "100%", opacity: 0 },
+                    hovered: { y: 0, opacity: 1 },
+                  }}
+                  transition={{
+                    duration: DURATION,
+                    ease: [0.76, 0, 0.24, 1],
+                    delay: STAGGER * i,
+                  }}
+                  className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                >
+                  {l === " " ? "\u00A0" : l}
+                </motion.span>
+              ))}
+            </div>
+          </motion.a>
+        );
+      })}
+    </div>
+  </div>
+</motion.nav>
+
+  );
+};
+
+export default NavbarElement;
+
+gsap.registerPlugin(ScrollTrigger);
+
+const Menu = () => {
+  const sectionRef = useRef(null);
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+  const cards = cardsRef.current;
+
+  // Initial tilted state
+  const setTilted = () => {
+    gsap.set(cards, {
+      rotateX: 80,
+      rotateY: (i) => (i % 2 === 0 ? -24 : 24),
+      y: 60,
+      transformPerspective: 1400,
+    });
+  };
+
+  setTilted();
+
+  const tl = gsap.timeline({
+    paused: true,
+    defaults: {
+      duration: 1.8,
+      ease: "power3.out",
+    },
+  });
+
+  tl.to(cards, {
+    rotateX: 0,
+    rotateY: 0,
+    y: 0,
+    stagger: 0.1,
+  });
+
+  ScrollTrigger.create({
+    trigger: sectionRef.current,
+    start: "top 100%",
+    end: "bottom 30%",
+    onEnter: () => tl.play(),
+    onLeaveBack: () => {
+      tl.pause(0);
+      setTilted();
+    },
+  });
+
+  return () => {
+    ScrollTrigger.kill();
+    tl.kill();
+  };
+}, []);
+
+
+import React from 'react'
+
+const Contacts = () => {
+  return (
+    <div className='w-screen h-[25vw] flex justify-center items-center '>
+        <div className="w-full h-1/2 flex items-center justify-center text-white text-3xl">
+        <div className="w-1/2 flex flex-col items-center justify-center gap-4">
+          <p className="">
+            Reach out for reservations, collaborations, or any inquiries.
+          </p>
+        </div>
+        <div className="w-1/2 flex flex-row items-center justify-center gap-4">
+        
+        <div className="w-1/2 flex flex-col items-center justify-center gap-4">
+        <h2 className="text-4xl">Contact Us</h2>
+          <p className="text-center">Email: contact@fashionapp.com</p> 
+          <p className="text-center">Phone: +1 (123) 456-7890</p>
+          </div>
+
+          <div className="w-1/2 flex flex-col">
+          <h2 className="">
+            Address
+          </h2>
+          <p className="text-center">123 Fashion St.</p>
+          <p className="text-center">New York, NY 10001</p>
+          </div>
+        </div>
+      </div>
+        </div>
+  )
+}
+
+export default Contacts
+
+
+import React from "react";
+import { motion } from "framer-motion";
+
+/* ---------------- Variants ---------------- */
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.06,
+    },
+  },
+};
+
+const letterVariants = {
+  hidden: {
+    x: -24,
+    opacity: 0,
+  },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1], // editorial ease
+    },
+  },
+};
+
+/* ---------------- Animated Headline ---------------- */
+const AnimatedHeadline = ({ text, className = "" }) => {
+  const letters = text.split("");
+
+  return (
+    <motion.span
+      className={`flex ${className}`}
+      style={{ fontFamily: "Cormorant, serif" }}
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{
+        once: false,      // 🔥 replay every time
+        margin: "-20%",   // start slightly before full view
+      }}
+    >
+      {letters.map((char, i) => (
+        <span
+          key={i}
+          className="relative inline-block overflow-hidden"
+        >
+          <motion.span
+            variants={letterVariants}
+            className="inline-block will-change-transform"
+          >
+            {char === " " ? "\u00A0" : char}
+          </motion.span>
+        </span>
+      ))}
+    </motion.span>
+  );
+};
+
+export default AnimatedHeadline;
+
+
+
+import CoffeePlate from "@/components/CoffeePlate";
+
+export default function Menu() {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+      {/* Background plate */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <CoffeePlate size={420} delay={0.2} />
+      </div>
+
+
+      {/* Foreground content */}
+      <div className="relative z-10 max-w-6xl w-full px-10">
+        
+        {/* Title */}
+        <div className="text-center mb-24">
+          <h1
+            className="text-[64px] tracking-[0.08em] text-[#E8E3D8]"
+            style={{ fontFamily: "var(--font-playfair)" }}
+          >
+            MENU
+          </h1>
+        </div>
+
+        {/* Menu Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-y-20 gap-x-10 place-items-center">
+          {["Cappuccino", "Latte", "Mocha", "Espresso", "Americano", "Cold Brew"].map(
+            (item) => (
+              <div key={item} className="text-center">
+                <h2
+                  className="text-[16px] tracking-[0.12em] text-[#E8E3D8]"
+                  style={{ fontFamily: "var(--font-playfair)" }}
+                >
+                  {item}
+                </h2>
+              </div>
+            )
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+
+
+"use client";
+
+import React, { useEffect, useRef } from "react";
+import Image from "next/image";
+import { menuItems } from "./MenuData";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import AnimatedHeadline from "../AnimatedHeadline";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const Menu = () => {
+  const sectionRef = useRef(null);
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+  const cards = cardsRef.current;
+
+  // Initial tilted state
+  const setTilted = () => {
+    gsap.set(cards, {
+      rotateX: 80,
+      rotateY: (i) => (i % 2 === 0 ? -24 : 24),
+      y: 60,
+      transformPerspective: 1400,
+    });
+  };
+
+  setTilted();
+
+  const tl = gsap.timeline({
+    paused: true,
+    defaults: {
+      duration: 1.8,
+      ease: "power3.out",
+    },
+  });
+
+  tl.to(cards, {
+    rotateX: 0,
+    rotateY: 0,
+    y: 0,
+    stagger: 0.1,
+  });
+
+  ScrollTrigger.create({
+    trigger: sectionRef.current,
+    start: "top 100%",
+    end: "bottom 20%",
+    onEnter: () => tl.play(),
+    onLeaveBack: () => {
+      tl.pause(0);
+      setTilted();
+    },
+  });
+
+  return () => {
+    ScrollTrigger.kill();
+    tl.kill();
+  };
+}, []);
+
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative w-full min-h-screen flex items-center justify-center z-50"
+    >
+      <div className="grid grid-rows-[auto_1fr] gap-20 w-full max-w-6xl px-10">
+
+        {/* Title */}
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-[52px] md:text-[64px] tracking-[0.08em] text-[#E8E3D8]"
+           style={{ fontFamily: "var(--font-playfair)" }}>
+           <AnimatedHeadline text="OUR MENU" />
+          </h1>
+
+          <p className="mt-6 max-w-xl text-center text-[14px] tracking-[0.12em] text-[#E8E3D8]/70"
+          style={{ fontFamily: "var(--font-geistSans)" }}>
+            Rooted in tradition and refined through process, our menu reflects a
+            commitment to simplicity, balance, and the experience of good coffee.
+          </p>
+        </div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16 place-items-center">
+          {menuItems.map((item, index) => (
+            <div key={index} className="flex flex-col items-center gap-6 text-center">
+
+              <div
+                ref={(el) => (cardsRef.current[index] = el)}
+                className="flip-card w-[200px] h-[240px]"
+              >
+                <div className="flip-inner">
+
+                  {/* Front */}
+                  <div className="flip-face bg-black/20 border border-white/10 backdrop-blur-xl flex items-center justify-center">
+                    <Image
+                      src={item.img}
+                      alt={item.title}
+                      fill
+                      className="object-contain p-6 rounded-2xl"
+                    />
+                  </div>
+
+                  {/* Back */}
+                  <div className="flip-face flip-back bg-[#141414]/90 border border-white/10 backdrop-blur-xl flex flex-col items-center justify-center px-5">
+                    <p className="text-[20px] text-[#E8E3D8]">{item.price}</p>
+                    <p className="mt-3 text-[12px] text-[#E8E3D8]/70"
+                    style={{ fontFamily: "var(--font-geistSans)" }}>
+                      {item.desc}
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+
+              <h2 className="text-[16px] tracking-[0.14em] uppercase text-[#E8E3D8]"
+              style={{ fontFamily: "var(--font-playfair)" }}>
+                {item.title}
+              </h2>
+
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+export default Menu;
+
+
+'use client';
+import React from "react";
+import HomeImage from "./HomeImage";
+import AnimatedHeadline from "../AnimatedHeadline";
+import AnimatedLine from "../AnimatedLine";
+
+const Home = () => {
+  return (
+    <section className="w-full min-h-screen">
+      <div className="max-w-[1440px] mx-auto px-10 z-10 ">
+        <div className="grid grid-cols-12 gap-6">
+
+          {/* Background Wrapper */}
+          <div className="relative col-span-12 h-[600px] rounded-lg overflow-hidden">
+
+            {/* Background Image / Video */}
+            <div className="absolute inset-0 z-20 grid grid-cols-1 border-2 border-white/10 rounded-lg overflow-hidden">
+              <HomeImage />
+            </div>
+            <div className="relative z-50 h-full flex items-center">
+              <div className="grid grid-cols-12 w-full">
+
+                <div className="col-span-12 col-start-1 text-center px-6 py-8 rounded-lg">
+
+                  <h1
+                    className="
+    text-[52px] md:text-[96px]
+    leading-[1.1] md:leading-[1.05]
+    tracking-[0.06em] md:tracking-[0.08em]
+    font-light text-[#E8E3D8] text-center
+  "
+                    style={{ fontFamily: "var(--font-playfair)" }}
+                  >
+                    <AnimatedHeadline  text="COFFEE TIME" />
+
+                  </h1>
+
+
+
+                  <p className="
+    mt-6 max-w-[560px] mx-auto
+    text-[16px] md:text-[16px]
+leading-[1.6] md:leading-[1.7]
+tracking-[0.01em]
+
+    text-white/80 text-center
+  "
+                    style={{ fontFamily: "var(--font-geistSans)" }}
+                  >
+                   <AnimatedLine text="Thoughtfully brewed coffee, presented in a calm, intentional digital space." />
+                  </p>
+                </div>
+
+              </div>
+            </div>
+
+
+            {/* Optional Overlay Gradient */}
+            <div className="absolute inset-0 z-30 bg-black/40" />
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Home;
+
+
+
+import React from "react";
+import Home from "@/app/components/home/Home";
+import Navbar from "@/app/components/nav/Navbar";
+import Menu from "@/app/components/menu/Menu";
+import Footer from "@/app/components/footer/Footer";
+import Contacts from "@/app/components/contacts/Contacts";
+//import CoffeePlate from "@/app/components/menu/CoffeePlate";
+
+const Page = () => {
+  return (
+    <main className="z-50 min-h-screen bg-[#1D1D1D] text-white">
+      <Navbar />
+     <Home />
+      <Menu/>
+      <Footer/>
+      <Contacts/>
+    </main>
+  );
+};
+
+export default Page;
+
+
+
+"use client";
+
+import React, { useEffect, useRef } from "react";
+import Image from "next/image";
+import { menuItems } from "./MenuData";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import AnimatedHeadline from "../AnimatedHeadline";
+import AnimatedLine from "../AnimatedLine";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const Menu = () => {
+  const sectionRef = useRef(null);
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+  const cards = cardsRef.current;
+
+  // Initial tilted state
+  const setTilted = () => {
+    gsap.set(cards, {
+      rotateX: 80,
+      rotateY: (i) => (i % 2 === 0 ? -24 : 24),
+      y: 60,
+      transformPerspective: 1400,
+    });
+  };
+
+  setTilted();
+
+  const tl = gsap.timeline({
+    paused: true,
+    defaults: {
+      duration: 1.8,
+      ease: "power3.out",
+    },
+  });
+
+  tl.to(cards, {
+    rotateX: 0,
+    rotateY: 0,
+    y: 0,
+    stagger: 0.1,
+  });
+
+  ScrollTrigger.create({
+    trigger: sectionRef.current,
+    start: "top 100%",
+    end: "bottom 20%",
+    onEnter: () => tl.play(),
+    onLeaveBack: () => {
+      tl.pause(0);
+      setTilted();
+    },
+  });
+
+  return () => {
+    ScrollTrigger.kill();
+    tl.kill();
+  };
+}, []);
+
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative w-full min-h-screen flex items-center justify-center z-50"
+    >
+      <div className="grid grid-rows-[auto_1fr] gap-20 w-full max-w-6xl px-10">
+
+        {/* Title */}
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-[52px] md:text-[64px] tracking-[0.08em] text-[#E8E3D8]"
+           style={{ fontFamily: "var(--font-playfair)" }}>
+           <AnimatedHeadline text="OUR MENU" />
+          </h1>
+
+          <p className="mt-6 max-w-xl text-center text-[14px] tracking-[0.12em] text-[#E8E3D8]/70"
+          style={{ fontFamily: "var(--font-geistSans)" }}>
+            
+<AnimatedLine text="Rooted in tradition and refined through process, our menu reflects a commitment to simplicity, balance, and the experience of good coffee." />
+          </p>
+        </div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16 place-items-center">
+          {menuItems.map((item, index) => (
+            <div key={index} className="flex flex-col items-center gap-6 text-center">
+
+              <div
+                ref={(el) => (cardsRef.current[index] = el)}
+                className="flip-card w-[200px] h-[240px]"
+              >
+                <div className="flip-inner">
+
+                  {/* Front */}
+                  <div className="flip-face bg-black/20 border border-white/10 backdrop-blur-xl flex items-center justify-center">
+                    <Image
+                      src={item.img}
+                      alt={item.title}
+                      fill
+                      className="object-contain p-6 rounded-2xl"
+                    />
+                  </div>
+
+                  {/* Back */}
+                  <div className="flip-face flip-back bg-[#141414]/90 border border-white/10 backdrop-blur-xl flex flex-col items-center justify-center px-5">
+                    <p className="text-[20px] text-[#E8E3D8]">{item.price}</p>
+                    <p className="mt-3 text-[12px] text-[#E8E3D8]/70"
+                    style={{ fontFamily: "var(--font-geistSans)" }}>
+                      {item.desc}
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+
+              <h2 className="text-[16px] tracking-[0.14em] uppercase text-[#E8E3D8]"
+              style={{ fontFamily: "var(--font-playfair)" }}>
+                 <AnimatedHeadline text={item.title} />
+              </h2>
+
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+export default Menu;
+
+
+
+"use client";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { navData } from "./Data";
+
+const NavbarElement = () => {
+  const router = useRouter();
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const DURATION = 0.45;
+  const STAGGER = 0.025;
+
+  /* ---------------- Scroll hide / show ---------------- */
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setShowNavbar(!(currentScrollY > lastScrollY && currentScrollY > 100));
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  /* ---------------- Navigation handler ---------------- */
+  const handleScroll = (href) => {
+    if (!href) return;
+    if (!href.startsWith("#")) return router.push(href);
+
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <motion.nav
+  animate={{ y: showNavbar ? 0 : -120 }}
+  transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+  className="
+    fixed top-0 left-0 z-50 w-full
+    bg-transparent
+  "
+>
+  <div
+    className="
+      mx-auto max-w-[1280px]
+      h-[72px]
+      px-6
+      flex items-center justify-between
+    "
+  >
+    {/* Logo — Left */}
+    <div className="flex items-center">
+      <span
+        className="
+          text-[18px]
+          tracking-[0.25em]
+          uppercase
+          text-[#E8E3D8]
+          font-semibold
+          leading-tight
+        "
+        style={{ fontFamily: "var(--font-geistSans)" }}
+      >
+        Coffee <br /> Time
+      </span>
+    </div>
+
+    {/* Navigation — Right */}
+    <div className="flex items-center gap-10">
+      {navData.map((item) => {
+        const isPrimary = item.id === 5;
+
+        return (
+          <motion.a
+            key={item.id}
+            onClick={(e) => {
+              e.preventDefault();
+              handleScroll(item.href);
+            }}
+            initial="initial"
+            whileHover="hovered"
+            className={`
+              relative
+              flex items-center justify-center
+              h-[44px]
+              overflow-hidden
+              cursor-pointer
+              text-[14px]
+              tracking-[0.08em]
+              uppercase
+              font-medium
+              ${
+                isPrimary
+                  ? "border border-[#E8E3D8] px-6 rounded-md text-[#E8E3D8] font-semibold ml-4"
+                  : "text-[#E8E3D8]"
+              }
+            `}
+            style={{ fontFamily: "var(--font-geistSans)" }}
+          >
+            {/* Default text */}
+            <div className="inset-0 flex items-center justify-center">
+              {item.title.split("").map((l, i) => (
+                <motion.span
+                  key={i}
+                  variants={{
+                    initial: { y: 0, opacity: 1 },
+                    hovered: { y: "-100%", opacity: 0 },
+                  }}
+                  transition={{
+                    duration: DURATION,
+                    ease: [0.76, 0, 0.24, 1],
+                    delay: STAGGER * i,
+                  }}
+                  className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                >
+                  {l === " " ? "\u00A0" : l}
+                </motion.span>
+              ))}
+            </div>
+
+            {/* Hover text */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {item.title.split("").map((l, i) => (
+                <motion.span
+                  key={i}
+                  variants={{
+                    initial: { y: "100%", opacity: 0 },
+                    hovered: { y: 0, opacity: 1 },
+                  }}
+                  transition={{
+                    duration: DURATION,
+                    ease: [0.76, 0, 0.24, 1],
+                    delay: STAGGER * i,
+                  }}
+                  className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                >
+                  {l === " " ? "\u00A0" : l}
+                </motion.span>
+              ))}
+            </div>
+          </motion.a>
+        );
+      })}
+    </div>
+  </div>
+</motion.nav>
+
+  );
+};
+
+export default NavbarElement;
+
+
+
+'use client'
+import React, { useRef } from 'react';
+import Magnetic from '.././magnetic/Magnetic';
+//import Footer from './Footer';
+//import ContactImage from './ContactImage';
+import { motion, useAnimationFrame } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import gsap from 'gsap';
+import Image from 'next/image';
+import AnimatedHeadline from "../AnimatedHeadline";
+import AnimatedLine from "../AnimatedLine";
+
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const Footer = () => {
+    const router = useRouter();
+    const borderRef = useRef(null);
+
+    useAnimationFrame((t) => {
+        if (borderRef.current) {
+            const angle = (t / 10) % 360;
+            borderRef.current.style.setProperty('--border-angle', `${angle}deg`);
+        }
+    });
+
+    const handleNavigation = () => {
+        const overlay = document.getElementById('transition-overlay')
+
+        if (!overlay) {
+            // Fallback: if overlay not mounted, just navigate
+            router.push('/contact')
+            return
+        }
+
+        // Animate overlay down before routing
+        gsap.to(overlay, {
+            y: 0,
+            duration: 0.6,
+            ease: 'power4.inOut',
+            onComplete: () => {
+                router.push('/contact')
+            }
+        })
+    }
+
+
+
+    return (
+        <motion.section 
+         variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-120px" }}
+        className="relative w-full min-h-[70vh] mt-20 overflow-hidden flex justify-center items-center ">
+
+            {/* Background Image */}
+            <Image
+                src="/features/Coffee/Coffee_POWDER.jpg"
+                alt="Coffee background"
+                fill
+                priority
+                className="object-cover"
+            />
+
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black/65 z-10" />
+
+            {/* Content */}
+            <div className="relative z-40 w-full h-full flex justify-center items-center px-20">
+
+                <motion.div
+                    ref={borderRef}
+                    className="w-full flex justify-center items-center"
+                >
+                    <div className="w-full flex items-center justify-center gap-40">
+  <motion.span
+      className="absolute rounded-full bg-[#E8E3D8]"
+      style={{
+        width: 240,
+        height: 240,
+        left: circlePos.x - 120,
+        top: circlePos.y - 120,
+        zIndex: 0,
+      }}
+      variants={{
+        initial: { scale: 0, opacity: 0 },
+        hovered: { scale: 1.15, opacity: 1 },
+      }}
+      transition={{
+        duration: 0.5,
+        ease: [0.76, 0, 0.24, 1],
+      }}
+    />
+                        {/* Text Block */}
+                        <div className="flex flex-col gap-3 max-w-xl">
+
+                            <h1
+                                className="text-[36px] md:text-[56px] leading-[1.1] tracking-[0.12em] text-[#E8E3D8]"
+                                style={{ fontFamily: "var(--font-playfair)" }}
+                            >
+                               <AnimatedHeadline text="Visit Our Café" /> 
+                            </h1>
+                            <hr className='h-[0.01vh] text-white/40' />
+                            <p
+                                className="text-[13px] leading-relaxed tracking-[0.08em] text-[#E8E3D8]/75"
+                                style={{ fontFamily: "var(--font-geistSans)" }}
+                            >
+                                <AnimatedLine text="
+                                A space shaped by craft, calm, and conversation.
+                                Join us for thoughtfully brewed coffee, warm interiors,
+                                and moments meant to be savored—one cup at a time." />
+                            </p>
+
+                        </div>
+
+                        {/* CTA */}
+                        <Magnetic>
+                            <button
+                                onClick={handleNavigation}
+                                className="
+              w-40 h-40 flex items-center justify-center
+              rounded-full
+              border border-white/15
+              backdrop-blur-2xl
+              bg-[#7d553b]/90
+              text-[#E8E3D8]
+              text-[12px]
+              tracking-[0.18em]
+              uppercase  z-40
+            "
+                                style={{ fontFamily: "var(--font-cormorant)" }}
+                            >
+                                Reserve<br />the Experience
+                            </button>
+                        </Magnetic>
+
+                    </div>
+                </motion.div>
+
+            </div>
+        </motion.section>
+
+    );
+
+};
+
+export default Footer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { navData } from "./Data";
+
+const NavbarElement = () => {
+  const router = useRouter();
+
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const DURATION = 0.45;
+  const STAGGER = 0.025;
+
+  /* ---------------- Scroll hide / show ---------------- */
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setShowNavbar(!(currentScrollY > lastScrollY && currentScrollY > 100));
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  /* ---------------- Navigation handler ---------------- */
+  const handleScroll = (href) => {
+    if (!href) return;
+    if (!href.startsWith("#")) return router.push(href);
+
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <motion.nav
+      animate={{ y: showNavbar ? 0 : -120 }}
+      transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+      className="fixed top-0 left-0 z-50 w-full bg-transparent"
+    >
+      <div className="mx-auto max-w-[1280px] h-[72px] px-6 flex items-center justify-between">
+        {/* Logo */}
+        <div>
+          <span
+            className="text-[18px] tracking-[0.25em] uppercase text-[#E8E3D8] font-semibold leading-tight"
+            style={{ fontFamily: "var(--font-geistSans)" }}
+          >
+            Coffee <br /> Time
+          </span>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex items-center gap-10">
+          {navData.map((item) => {
+            const isPrimary = item.id === 5;
+            const [circlePos, setCirclePos] = useState({ x: 0, y: 0 });
+
+            return (
+              <motion.a
+                key={item.id}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScroll(item.href);
+                }}
+                onMouseMove={(e) => {
+                  if (!isPrimary) return;
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  setCirclePos({
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top,
+                  });
+                }}
+                initial="initial"
+                whileHover="hovered"
+                className={`
+                  relative
+                  flex items-center justify-center
+                  h-[44px]
+                  overflow-hidden
+                  cursor-pointer
+                  text-[14px]
+                  tracking-[0.08em]
+                  uppercase
+                  font-medium
+                  ${
+                    isPrimary
+                      ? "border border-[#E8E3D8] px-6 rounded-md font-semibold"
+                      : ""
+                  }
+                `}
+                style={{ fontFamily: "var(--font-geistSans)" }}
+              >
+                {/* ---- Circular hover fill (ONLY id 5) ---- */}
+                {isPrimary && (
+                  <motion.span
+                    className="absolute rounded-full bg-[#7d553b]/90"
+                    style={{
+                      width: 220,
+                      height: 220,
+                      left: circlePos.x - 110,
+                      top: circlePos.y - 110,
+                      zIndex: 0,
+                    }}
+                    variants={{
+                      initial: { scale: 0, opacity: 0 },
+                      hovered: { scale: 1.2, opacity: 1 },
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: [0.76, 0, 0.24, 1],
+                    }}
+                  />
+                )}
+
+                {/* ---- Default text ---- */}
+                <div
+                  className={`relative z-10 flex items-center justify-center text-[#E8E3D8] ${
+                    isPrimary ? "text-[#E8E3D8]" : ""
+                  }`}
+                >
+                  {item.title.split("").map((l, i) => (
+                    <motion.span
+                      key={i}
+                      variants={{
+                        initial: { y: 0, opacity: 1 },
+                        hovered: { y: "-100%", opacity: 0 },
+                      }}
+                      transition={{
+                        duration: DURATION,
+                        ease: [0.76, 0, 0.24, 1],
+                        delay: STAGGER * i,
+                      }}
+                      className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                    >
+                      {l === " " ? "\u00A0" : l}
+                    </motion.span>
+                  ))}
+                </div>
+
+                {/* ---- Hover text ---- */}
+                <div
+                  className={`absolute inset-0 z-10 flex items-center justify-center ${
+                    isPrimary ? "" : "text-[#E8E3D8]"
+                  }`}
+                >
+                  {item.title.split("").map((l, i) => (
+                    <motion.span
+                      key={i}
+                      variants={{
+                        initial: { y: "100%", opacity: 0 },
+                        hovered: { y: 0, opacity: 1 },
+                      }}
+                      transition={{
+                        duration: DURATION,
+                        ease: [0.76, 0, 0.24, 1],
+                        delay: STAGGER * i,
+                      }}
+                      className={`inline-block ${l === " " ? "w-[0.4em]" : ""}`}
+                    >
+                      {l === " " ? "\u00A0" : l}
+                    </motion.span>
+                  ))}
+                </div>
+              </motion.a>
+            );
+          })}
+        </div>
+      </div>
+    </motion.nav>
+  );
+};
+
+export default NavbarElement;
+
+
+
+import React from "react";
+
+const HomeImage= () => {
+  return (
+
+    <section className="w-full min-h-screen">
+  <div className="max-w-[1440px] mx-auto ">
+    <div className="grid grid-col-12 ">
+
+      {/* Visual */}
+      <div className="col-span-12 lg:col-span-6 w-full h-[400px] lg:h-screen rounded-lg overflow-hidden object-cover">
+         <video
+        className="w-full h-full object-cover overflow-hidden"
+        fill
+      autoPlay
+        muted
+        loop
+        playsInline
+      >
+        <source src="/features/Coffee/Coffee_video_4.mp4" type="video/mp4" />
+      
+      </video>
+      </div>
+
+    </div>
+  </div>
+</section>
+  );
+};
+
+export default HomeImage;
+
+
+'use client';
+import React from "react";
+import HomeImage from "./HomeImage";
+import AnimatedHeadline from "../AnimatedHeadline";
+import AnimatedLine from "../AnimatedLine";
+
+const Home = () => {
+  return (
+    <section className="w-full min-h-screen">
+      <div className="max-w-[1440px] mx-auto p-16 z-10 ">
+        <div className="grid grid-cols-12 gap-6">
+
+          {/* Background Wrapper */}
+          <div className="relative col-span-12 min-h-screen rounded-lg overflow-hidden flex items-center justify-center">
+
+
+            {/* Background Image / Video */}
+            <div className="absolute inset-0 z-20 grid grid-cols-1 border-2 border-white/10 rounded-lg overflow-hidden">
+              <HomeImage />
+            </div>
+            <div className="relative z-50 h-full flex items-center">
+              <div className="grid grid-cols-12 w-full">
+
+                <div className="col-span-12 col-start-1 text-center px-6 py-8 rounded-lg">
+
+                  <h1
+                    className="
+    text-[52px] md:text-[96px]
+    leading-[1.1] md:leading-[1.05]
+    tracking-[0.06em] md:tracking-[0.08em]
+    font-light text-[#E8E3D8] text-center
+  "
+                    style={{ fontFamily: "var(--font-playfair)" }}
+                  >
+                    <AnimatedHeadline  text="COFFEE TIME" />
+
+                  </h1>
+
+
+
+                  <p className="
+    mt-6 max-w-[560px] mx-auto
+    text-[16px] md:text-[16px]
+leading-[1.6] md:leading-[1.7]
+tracking-[0.01em]
+
+    text-white/80 text-center
+  "
+                    style={{ fontFamily: "var(--font-geistSans)" }}
+                  >
+                   <AnimatedLine text="Thoughtfully brewed coffee, presented in a calm, intentional digital space." />
+                  </p>
+                </div>
+
+              </div>
+            </div>
+
+
+            {/* Optional Overlay Gradient */}
+            <div className="absolute inset-0 z-30 bg-black/40" />
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Home;
+
+
+
+"use client";
+
+import React, { useEffect, useRef } from "react";
+import Image from "next/image";
+import { menuItems } from "./MenuData";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import AnimatedHeadline from "../AnimatedHeadline";
+import AnimatedLine from "../AnimatedLine";
+
+import { motion } from "framer-motion";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const Menu = () => {
+  const sectionRef = useRef(null);
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+    const cards = cardsRef.current;
+
+    const setTilted = () => {
+      gsap.set(cards, {
+        rotateX: 80,
+        rotateY: (i) => (i % 2 === 0 ? -24 : 24),
+        y: 60,
+        opacity: 0,
+        transformPerspective: 1400,
+        transformStyle: "preserve-3d",
+      });
+    };
+
+    setTilted();
+
+    const tl = gsap.timeline({
+      paused: true,
+      defaults: {
+        duration: 1.6,
+        ease: "power3.out",
+      },
+    });
+
+    tl.to(cards, {
+      rotateX: 0,
+      rotateY: 0,
+      y: 0,
+      opacity: 1,
+      stagger: 0.12,
+    });
+
+    const trigger = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top 80%",
+      once: false,
+      onEnter: () => tl.play(),
+      onLeaveBack: () => {
+        tl.pause(0);
+        setTilted();
+      },
+    });
+
+    return () => {
+      trigger.kill(); // ✅ kill ONLY this trigger
+      tl.kill();
+    };
+  }, []);
+
+
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 60 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
+
+
+  return (
+    <motion.section
+      ref={sectionRef}
+
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-120px" }}
+      
+      className="relative w-full min-h-screen flex items-center justify-center z-50"
+    >
+      <div className="grid grid-rows-[auto_1fr] gap-20 w-full max-w-6xl px-10">
+
+        {/* Title */}
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-[52px] md:text-[64px] tracking-[0.08em] text-[#E8E3D8]"
+            style={{ fontFamily: "var(--font-playfair)" }}>
+            <AnimatedHeadline text="OUR MENU" />
+          </h1>
+
+          <p className="mt-6 max-w-xl text-center text-[14px] tracking-[0.12em] text-[#E8E3D8]/70"
+            style={{ fontFamily: "var(--font-geistSans)" }}>
+
+            <AnimatedLine text="Rooted in tradition and refined through process, our menu reflects a commitment to simplicity, balance, and the experience of good coffee." />
+          </p>
+        </div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16 place-items-center">
+          {menuItems.map((item, index) => (
+            <div key={index} className="flex flex-col items-center gap-6 text-center">
+
+              <div
+                ref={(el) => (cardsRef.current[index] = el)}
+                className="flip-card w-[200px] h-[240px]"
+              >
+                <div className="flip-inner">
+
+                  {/* Front */}
+                  <div className="flip-face bg-black/20 border border-white/10 backdrop-blur-xl flex items-center justify-center">
+                    <Image
+                      src={item.img}
+                      alt={item.title}
+                      fill
+                      className="object-contain p-6 rounded-2xl"
+                    />
+                  </div>
+
+                  {/* Back */}
+                  <div className="flip-face flip-back bg-[#141414]/90 border border-white/10 backdrop-blur-xl flex flex-col items-center justify-center px-5">
+                    <p className="text-[20px] text-[#E8E3D8]">{item.price}</p>
+                    <p className="mt-3 text-[12px] text-[#E8E3D8]/70"
+                      style={{ fontFamily: "var(--font-geistSans)" }}>
+                      {item.desc}
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+
+              <h2 className="text-[16px] tracking-[0.14em] uppercase text-[#E8E3D8]"
+                style={{ fontFamily: "var(--font-playfair)" }}>
+                <AnimatedHeadline text={item.title} />
+              </h2>
+
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </motion.section> 
+  );
+};
+
+export default Menu;
+
+
+
+"use client";
+
+import React, { useRef, useState } from "react";
+import { motion, useAnimationFrame } from "framer-motion";
+import { useRouter } from "next/navigation";
+import gsap from "gsap";
+import Image from "next/image";
+
+import Magnetic from "../magnetic/Magnetic";
+import AnimatedHeadline from "../AnimatedHeadline";
+import AnimatedLine from "../AnimatedLine";
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const Footer = () => {
+  const router = useRouter();
+  const borderRef = useRef(null);
+
+  /* ---------- circular hover state ---------- */
+  const [circlePos, setCirclePos] = useState({ x: 0, y: 0 });
+
+  /* ---------- animated border angle ---------- */
+  useAnimationFrame((t) => {
+    if (borderRef.current) {
+      const angle = (t / 10) % 360;
+      borderRef.current.style.setProperty("--border-angle", `${angle}deg`);
+    }
+  });
+
+  /* ---------- navigation with transition ---------- */
+  const handleNavigation = () => {
+    const overlay = document.getElementById("transition-overlay");
+
+    if (!overlay) {
+      router.push("/contact");
+      return;
+    }
+
+    gsap.to(overlay, {
+      y: 0,
+      duration: 0.6,
+      ease: "power4.inOut",
+      onComplete: () => {
+        router.push("/contact");
+      },
+    });
+  };
+
+  return (
+    <motion.section
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-120px" }}
+      className="relative w-full min-h-[70vh] mt-20 overflow-hidden flex justify-center items-center"
+    >
+      {/* ---------- Background Image ---------- */}
+      <Image
+        src="/features/Coffee/Coffee_POWDER.jpg"
+        alt="Coffee background"
+        fill
+        priority
+        className="object-cover"
+      />
+
+      {/* ---------- Dark Overlay ---------- */}
+      <div className="absolute inset-0 bg-black/65 z-10" />
+
+      {/* ---------- Content ---------- */}
+      <div className="relative z-40 w-full h-full flex justify-center items-center px-20">
+        <motion.div
+          ref={borderRef}
+          className="w-full flex justify-center items-center"
+        >
+          <div className="w-full flex items-center justify-center gap-40">
+            {/* ---------- Text Block ---------- */}
+            <div className="flex flex-col gap-3 max-w-xl">
+              <h1
+                className="text-[36px] md:text-[56px] leading-[1.1] tracking-[0.12em] text-[#E8E3D8]"
+                style={{ fontFamily: "var(--font-playfair)" }}
+              >
+                <AnimatedHeadline text="Visit Our Café" />
+              </h1>
+
+              <hr className="h-[0.01vh] text-white/40" />
+
+              <p
+                className="text-[14px] leading-relaxed tracking-[0.08em] text-[#E8E3D8]/75"
+                style={{ fontFamily: "var(--font-geistSans)" }}
+              >
+                <AnimatedLine
+                  text="
+                  A space shaped by craft, calm, and conversation.
+                  Join us for thoughtfully brewed coffee, warm interiors,
+                  and moments meant to be savored—one cup at a time."
+                />
+              </p>
+            </div>
+
+            {/* ---------- CTA Button ---------- */}
+            <Magnetic>
+              <motion.button
+                onClick={handleNavigation}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  setCirclePos({
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top,
+                  });
+                }}
+                initial="initial"
+                whileHover="hovered"
+                className="
+                  relative
+                  w-40 h-40
+                  flex items-center justify-center
+                  rounded-full
+                  overflow-hidden
+                  border border-white/90
+                  backdrop-blur-2xl
+                 
+                  text-[#E8E3D8]
+                  text-[12px]
+                  tracking-[0.18em]
+                  uppercase
+                  z-40
+                "
+                style={{ fontFamily: "var(--font-cormorant)" }}
+              >
+                {/* ---- Circular hover fill ---- */}
+                <motion.span
+                  className="absolute rounded-full bg-[#7d553b]/90"
+                  style={{
+                    width: 240,
+                    height: 240,
+                    left: circlePos.x - 120,
+                    top: circlePos.y - 120,
+                    zIndex: 0,
+                  }}
+                  variants={{
+                    initial: { scale: 0, opacity: 0 },
+                    hovered: { scale: 1.15, opacity: 1 },
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    ease: [0.76, 0, 0.24, 1],
+                  }}
+                />
+
+                {/* ---- Button Text ---- */}
+                <span className="relative z-10 text-[#E8E3D8] text-center text-[14px] leading-tight">
+                  Reserve
+                  <br />
+                  the Experience
+                </span>
+              </motion.button>
+            </Magnetic>
+          </div>
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+};
+
+export default Footer;
+
+
+
+'use client'
+import React from "react";
+import Image from "next/image";
+import ContactFooter from "./ContactFooter";
+import AnimatedLine from "../AnimatedLine";
+import { motion } from "framer-motion";
+
+const Contacts = () => {
+  return (
+    <motion.section 
+      initial={{
+        opacity: 0,
+        scale: 0.85,
+        y: 120,
+      }}
+      whileInView={{
+        opacity: 1,
+        scale: 1,
+        y: 0,
+      }}
+      transition={{
+        duration: 1.2,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      viewport={{ once: true, margin: "-200px" }}
+      className="
+        relative 
+        z-10
+        min-h-[50vh]
+        bg-[#1D1D1D]
+        
+        w-screen py-24 flex items-center justify-center px-12
+      "
+    >
+    
+      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-16 text-white">
+
+        {/* Left: Map + Quote */}
+        <div className="flex flex-col gap-8">
+
+          {/* Map Placeholder */}
+          <div className="relative w-full h-[260px] rounded-2xl overflow-hidden flex justify-center items-center">
+            <Image
+              src="/features/Coffee/map.png"
+              alt="Sample map location"
+              fill
+              className="object-cover opacity-90"
+            />
+
+            {/* Map Label */}
+            <span className="absolute bottom-3 right-4 text-xs tracking-wide bg-black/60 px-3 py-1 rounded-full">
+              Sample location
+            </span>
+          </div>
+
+          {/* Quote */}
+          <p
+            className="max-w-md mx-auto text-center text-lg md:text-xl leading-relaxed font-light tracking-wide"
+            style={{ fontFamily: 'var(--font-playfair)' }}
+          >
+            <AnimatedLine text= "“ Reach out for reservations or collaborations, we’re always happy to hear from you. ” " />
+          </p>
+
+        </div>
+
+        {/* Right: Contact Details */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
+
+          {/* Contact */}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-2xl font-medium tracking-wide">
+              <AnimatedLine text="Contact Us" />
+            </h2>
+            <p className="text-sm opacity-80">
+              <AnimatedLine text="hello@yourcafename.com" />
+            </p>
+            <p className="text-sm opacity-80">
+              <AnimatedLine text="+91 666666" />
+            </p>
+          </div>
+
+          {/* Address */}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-2xl font-medium tracking-wide">
+              <AnimatedLine text="Address" />
+            </h2>
+            <p className="text-sm opacity-80">
+              <AnimatedLine text="24B, Linking Road, Bandra West" />
+            </p>
+            <p className="text-sm opacity-80">
+              <AnimatedLine text="Mumbai 400050,Maharashtra, India" />  
+            </p>
+          </div>
+          <div className="sm:col-span-2 flex justify-center items-center pt-8">
+  <ContactFooter />
+</div>
+
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
+export default Contacts;
+
+
+
+
+"use client";
+
+import React, { useRef, useState } from "react";
+import { motion, useAnimationFrame } from "framer-motion";
+import { useRouter } from "next/navigation";
+import gsap from "gsap";
+import Image from "next/image";
+
+import Magnetic from "../magnetic/Magnetic";
+import AnimatedHeadline from "../AnimatedHeadline";
+import AnimatedLine from "../AnimatedLine";
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const Footer = () => {
+  const router = useRouter();
+  const borderRef = useRef(null);
+  const [circlePos, setCirclePos] = useState({ x: 0, y: 0 });
+
+  useAnimationFrame((t) => {
+    if (borderRef.current) {
+      const angle = (t / 10) % 360;
+      borderRef.current.style.setProperty("--border-angle", `${angle}deg`);
+    }
+  });
+
+  const handleNavigation = () => {
+    const overlay = document.getElementById("transition-overlay");
+
+    if (!overlay) {
+      router.push("/contact");
+      return;
+    }
+
+    gsap.to(overlay, {
+      y: 0,
+      duration: 0.6,
+      ease: "power4.inOut",
+      onComplete: () => {
+        router.push("/contact");
+      },
+    });
+  };
+
+  return (
+    <motion.section
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-120px" }}
+      className="relative w-full min-h-[70vh] mt-16 md:mt-20 overflow-hidden flex justify-center items-center px-4 sm:px-6"
+    >
+      {/* Background */}
+      <Image
+        src="/features/Coffee/Coffee_POWDER.jpg"
+        alt="Coffee background"
+        fill
+        priority
+        className="object-cover"
+      />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/65 z-10" />
+
+      {/* Content */}
+      <div className="relative z-40 w-full h-full flex justify-center items-center px-4 sm:px-10 md:px-20">
+        <motion.div
+          ref={borderRef}
+          className="w-full flex justify-center items-center"
+        >
+          <div className="
+            w-full
+            flex flex-col md:flex-row
+            items-center
+            justify-center
+            gap-14 md:gap-32 lg:gap-40
+            text-center md:text-left
+          ">
+            {/* Text Block */}
+            <div className="flex flex-col gap-4 max-w-md sm:max-w-lg md:max-w-xl">
+              <h1
+                className="
+                  text-[28px] sm:text-[36px] md:text-[56px]
+                  leading-[1.15]
+                  tracking-[0.12em]
+                  text-[#E8E3D8] 
+                "
+                style={{ fontFamily: "var(--font-playfair)" }}
+              >
+                <AnimatedHeadline text="Visit Our Café" />
+              </h1>
+
+              <hr className="h-[0.01vh] text-white/40" />
+
+              <p
+                className="
+                  text-[12px] sm:text-[13px] md:text-[14px]
+                  leading-relaxed
+                  tracking-[0.08em]
+                  text-[#E8E3D8]/75
+                "
+                style={{ fontFamily: "var(--font-geistSans)" }}
+              >
+                <AnimatedLine
+                  text="
+                  A space shaped by craft, calm, and conversation.
+                  Join us for thoughtfully brewed coffee, warm interiors,
+                  and moments meant to be savored—one cup at a time."
+                />
+              </p>
+            </div>
+
+            {/* CTA Button */}
+            <Magnetic>
+              <motion.button
+                onClick={handleNavigation}
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  setCirclePos({
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top,
+                  });
+                }}
+                initial="initial"
+                whileHover="hovered"
+                className="
+                  relative
+                  w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40
+                  flex items-center justify-center
+                  rounded-full
+                  overflow-hidden
+                  border border-white/90
+                  backdrop-blur-2xl
+                  text-[#E8E3D8]
+                  text-[11px] sm:text-[12px]
+                  tracking-[0.18em]
+                  uppercase
+                  z-40
+                "
+                style={{ fontFamily: "var(--font-cormorant)" }}
+              >
+                <motion.span
+                  className="absolute rounded-full bg-[#7d553b]/90"
+                  style={{
+                    width: 240,
+                    height: 240,
+                    left: circlePos.x - 120,
+                    top: circlePos.y - 120,
+                    zIndex: 0,
+                  }}
+                  variants={{
+                    initial: { scale: 0, opacity: 0 },
+                    hovered: { scale: 1.15, opacity: 1 },
+                  }}
+                  transition={{
+                    duration: 0.5,
+                    ease: [0.76, 0, 0.24, 1],
+                  }}
+                />
+
+                <span className="relative z-10 text-[#E8E3D8] text-center text-[12px] sm:text-[13px] md:text-[14px] leading-tight">
+                  Reserve
+                  <br />
+                  the Experience
+                </span>
+              </motion.button>
+            </Magnetic>
+          </div>
+        </motion.div>
+      </div>
+    </motion.section>
+  );
+};
+
+export default Footer;
