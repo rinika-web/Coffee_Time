@@ -14,11 +14,11 @@ import { motion } from "framer-motion";
 const Menu = () => {
   const sectionRef = useRef(null);
   const cardsRef = useRef([]);
- 
+  gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
     const cards = cardsRef.current;
- gsap.registerPlugin(ScrollTrigger);
+
     const setTilted = () => {
       gsap.set(cards, {
         rotateX: 80,
