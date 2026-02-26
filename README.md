@@ -1,36 +1,184 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ☕ Coffee Time
+#### Advanced React Motion Experience (Next.js + GSAP + Framer Motion)
 
-## Getting Started
+A production-style, motion-driven coffee brand interface built with modern React architecture.
 
-First, run the development server:
+This project demonstrates advanced frontend engineering through component design, animation lifecycle management, interaction systems, and responsive layout control.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Project Overview
+
+### Coffee Time is a cinematic brand website engineered to showcase:
+
+Advanced React component architecture
+
+Hybrid animation systems
+
+Scroll-based interaction logic
+
+Physics-inspired UI behavior
+
+Responsive navigation engineering
+
+Clean lifecycle management
+
+This is not a static UI mockup — it is an interaction-focused React application built with production patterns.
+
+### 🛠 Tech Stack
+
+Next.js (App Router)
+
+React 18
+
+Tailwind CSS
+
+GSAP + ScrollTrigger
+
+Framer Motion
+
+Next/Image Optimization
+
+## 🧠 React Engineering Highlights
+### 1️⃣ Component Architecture
+
+Fully modular structure
+
+Clear separation of concerns
+
+Reusable animation primitives (AnimatedHeadline, AnimatedLine)
+
+Higher-order interaction wrapper (Magnetic)
+
+### 2️⃣ State & Lifecycle Control
+
+Scroll-based navbar visibility logic
+
+Controlled modal presentation with AnimatePresence
+
+Event listener cleanup on unmount
+
+ScrollTrigger destruction to prevent memory leaks
+
+Mouse position state for dynamic hover effects
+
+### 3️⃣ Performance Considerations
+
+gsap.quickTo() for optimized transform updates
+
+Avoiding unnecessary re-renders in hover interactions
+
+Viewport-based animation loading
+
+Proper animation cleanup patterns
+
+Image optimization via next/image
+
+### 🎬 Motion System Architecture
+#### GSAP (Imperative Animation Layer)
+
+##### Used for:
+
+3D perspective-based card entrance
+
+Scroll-triggered timeline orchestration
+
+Elastic magnetic hover physics
+
+Transform-based animation control
+
+Controlled timeline reset on scroll reverse
+
+##### Key techniques:
+
+transformPerspective
+
+preserve-3d
+
+Alternating rotateY
+
+Timeline staggering
+
+Lifecycle-safe cleanup
+
+#### Framer Motion (Declarative Layer)
+
+##### Used for:
+
+Section reveal animations
+
+Character-level hover text transitions
+
+Modal animation with presence management
+
+Navigation overlay transitions
+
+Viewport-triggered entrance control
+
+This hybrid approach demonstrates awareness of when to use imperative vs declarative motion systems.
+
+## ✨ Core Features
+### 🎥 Cinematic Hero
+
+Full-screen video background
+
+Layered overlays
+
+Animated typography
+
+### 🧾 Interactive Menu
+
+Scroll-triggered 3D card entrance
+
+Flip-card pricing interaction
+
+Responsive grid layout
+
+### 🎯 Magnetic CTA Button
+
+Cursor-attraction effect using GSAP
+
+Elastic easing physics
+
+Dynamic radial hover expansion
+
+Modal state management
+
+### 🧭 Responsive Navigation
+
+Scroll-direction hide/show logic
+
+Character-by-character hover animation
+
+Mobile overlay navigation
+
+Smooth hash scrolling + router navigation
+
+## 📍 Contact Section
+
+Viewport-based reveal animation
+
+Structured responsive grid layout
+
+Optimized image handling
+
+### 🖥 Installation
 ```
+git clone [https://github.com/rinika-web/Coffee_Time/edit/main/README.md]
+cd coffee-time
+npm install
+npm run dev
+```
+## 🎯 What This Project Demonstrates to Employers
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Strong React fundamentals
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Component-driven architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Advanced animation engineering
 
-## Learn More
+Scroll interaction logic
 
-To learn more about Next.js, take a look at the following resources:
+Lifecycle-aware implementation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Clean UI structuring
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Production-ready frontend thinking
