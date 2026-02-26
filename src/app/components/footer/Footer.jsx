@@ -22,7 +22,7 @@ const sectionVariants = {
 };
 
 const Footer = () => {
-  const borderRef = useRef<HTMLDivElement | null>(null);
+  const borderRef = useRef(null);
   const [circlePos, setCirclePos] = useState({ x: 0, y: 0 });
 
   // ✅ NEW STATE (only addition)

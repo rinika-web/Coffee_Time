@@ -9,11 +9,12 @@ import AnimatedHeadline from "../AnimatedHeadline";
 import AnimatedLine from "../AnimatedLine";
 import { motion } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
+
 
 const Menu = () => {
   const sectionRef = useRef(null);
   const cardsRef = useRef([]);
+  gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
     const cards = cardsRef.current;
