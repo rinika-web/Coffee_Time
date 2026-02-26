@@ -183,5 +183,6 @@ Clean UI structuring
 
 Production-ready frontend thinking
 
-🔗 **Live Demo:** [https://coffee-time-wyv7.vercel.app/]
-💼 **Portfolio:** [https://www.rinikakoley.com/]
+🔗 **Live Demo:** https://coffee-time-wyv7.vercel.app/
+
+💼 **Portfolio:** https://www.rinikakoley.com/
